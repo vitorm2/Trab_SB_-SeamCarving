@@ -19,6 +19,8 @@
 // SOIL é a biblioteca para leitura das imagens
 #include "SOIL.h"
 
+#include <math.h>
+
 // Um pixel RGB (24 bits)
 typedef struct {
     unsigned char r, g, b;
@@ -185,47 +187,73 @@ void keyboard(unsigned char key, int x, int y)
         }
 
         // PRINTA NA TELA
-        for(i = 0; i < (sizeof(listaPixelsPrimeiraColuna)/sizeof(int)); i++){
-            printf(" %d", listaPixelsPrimeiraColuna[i]);
-        }
+        //for(i = 0; i < (sizeof(listaPixelsPrimeiraColuna)/sizeof(int)); i++){
+        //    printf(" %d", listaPixelsPrimeiraColuna[i]);
+        //}
 
         for(i = 0; i < pic[0].height*pic[0].width; i++){
 
                 int comecoPrimeiraLinha = 0;
-                int comecoUltimaLinha = (pic[0].width*(pic[0].height - 1)) + 1;
-
+                int comecoUltimaLinha = pic[0].width*(pic[0].height - 1);
+                int rx, gx, bx;
+                int ry, gy, by;
+                //int energia;
                 // If da primeira linha pq varia o pixel de cima
-                if(i >= comecoPrimeiraLinha & i <= pic[0].width){
+                if(i >= comecoPrimeiraLinha & i < pic[0].width){
                         // Primeira linha primeiro pixel
                         if(i == 0){
+
+                            // direito menos esquerdo
+                            // baixo menos cima
+                            //printf("pixel central = %d   %d   %d\n", pic[0].img[i].r,pic[0].img[i].g,pic[0].img[i].b);
+
                             // pixel central
-                            pic[0].img[i].r;
-                            pic[0].img[i].g;
-                            pic[0].img[i].b;
+                            //pic[0].img[i].r;
+                            //pic[0].img[i].g;
+                            //pic[0].img[i].b;
 
                             // pixel da esquerda
-                            pic[0].img[pic[0].width].r;
-                            pic[0].img[pic[0].width].g;
-                            pic[0].img[pic[0].width].b;
+                            //pic[0].img[pic[0].width].r;
+                            //pic[0].img[pic[0].width].g;
+                            //pic[0].img[pic[0].width].b;
 
-                            // pixel da direita
-                            pic[0].img[i+1].r;
-                            pic[0].img[i+1].g;
-                            pic[0].img[i+1].b;
+                            //printf("pixel esquerdo = %d   %d   %d\n", pic[0].img[511].r,pic[0].img[511].g,pic[0].img[511].b);
+
+                            // pixel da direita menos o da esquerda
+                            rx = pic[0].img[i+1].r - pic[0].img[pic[0].width-1].r;
+                            gx = pic[0].img[i+1].g - pic[0].img[pic[0].width-1].g;
+                            bx = pic[0].img[i+1].b - pic[0].img[pic[0].width-1].b;
+
+                            //printf("pixel direito = %d   %d   %d\n", pic[0].img[i+1].r,pic[0].img[i+1].g,pic[0].img[i+1].b);
+
+                            //printf("rx: %d\n", rx);
+                            //printf("gx: %d\n", gx);
+                            //printf("bx: %d\n", bx);
 
                             // pixel de cima
-                            pic[0].img[comecoUltimaLinha].r;
-                            pic[0].img[comecoUltimaLinha].g;
-                            pic[0].img[comecoUltimaLinha].b;
+                            //pic[0].img[comecoUltimaLinha].r;
+                            //pic[0].img[comecoUltimaLinha].g;
+                            //pic[0].img[comecoUltimaLinha].b;
 
-                            // pixel de baixo
-                            pic[0].img[pic[0].width+1].r;
-                            pic[0].img[pic[0].width+1].g;
-                            pic[0].img[pic[0].width+1].b;
+                            //printf("pixel cima = %d   %d   %d\n", pic[0].img[comecoUltimaLinha].r,pic[0].img[comecoUltimaLinha].g,pic[0].img[comecoUltimaLinha].b);
+
+                            // pixel de baixo menos o de cima
+                            ry = pic[0].img[pic[0].width].r - pic[0].img[comecoUltimaLinha].r;
+                            gy = pic[0].img[pic[0].width].g - pic[0].img[comecoUltimaLinha].g;
+                            by = pic[0].img[pic[0].width].b - pic[0].img[comecoUltimaLinha].b;
+
+                            //printf("pixel cima = %d   %d   %d\n" , pic[0].img[pic[0].width].r,pic[0].img[pic[0].width].g,pic[0].img[pic[0].width].b);
+
+                            //printf("ry: %d\n", ry);
+                            //printf("gy: %d\n", gy);
+                            //printf("by: %d\n", by);
+
+                            calculaEnergia(matrizPixels, i, rx, gx, bx, ry, gy, by);
+                            //energia = (pow(rx,2) + pow(gx,2) + pow(bx,2)) + (pow(ry,2) + pow(gy,2) + pow(by,2));
                         }
 
                         // Primeira Linha ultimo pixel
-                        if(i == pic[0].width){
+                        if(i == (pic[0].width-1)){
                             // pixel central
                             pic[0].img[i].r;
                             pic[0].img[i].g;
@@ -241,15 +269,21 @@ void keyboard(unsigned char key, int x, int y)
                             pic[0].img[comecoPrimeiraLinha].g;
                             pic[0].img[comecoPrimeiraLinha].b;
 
+
+
                             // pixel de cima
                             pic[0].img[comecoUltimaLinha+i].r;
                             pic[0].img[comecoUltimaLinha+i].g;
                             pic[0].img[comecoUltimaLinha+i].b;
 
+                            printf("pixel cima = %d   %d   %d\n", pic[0].img[comecoUltimaLinha+i].r,pic[0].img[comecoUltimaLinha+i].g,pic[0].img[comecoUltimaLinha+i].b);
+
                             //// pixel de baixo
                             pic[0].img[pic[0].width+i].r;
                             pic[0].img[pic[0].width+i].g;
                             pic[0].img[pic[0].width+i].b;
+
+                            printf("pixel baixo = %d   %d   %d\n",pic[0].img[pic[0].width+i].r,pic[0].img[pic[0].width+i].g,pic[0].img[pic[0].width+i].b);
                         }
                         // Pixels do meio primeira linha
                         else{
@@ -289,53 +323,74 @@ void keyboard(unsigned char key, int x, int y)
                             pic[0].img[i].g;
                             pic[0].img[i].b;
 
+                            //printf("pixel central = %d   %d   %d\n", pic[0].img[i].r,pic[0].img[i].g,pic[0].img[i].b);
+
                             // pixel da esquerda
-                            pic[0].img[i-(pic[0].width * pic[0].height)].r;
-                            pic[0].img[i-(pic[0].width * pic[0].height)].g;
-                            pic[0].img[i-(pic[0].width * pic[0].height)].b;
+                            pic[0].img[pic[0].width * pic[0].height -1].r;
+                            pic[0].img[pic[0].width * pic[0].height -1].g;
+                            pic[0].img[pic[0].width * pic[0].height -1].b;
+
+                            //printf("pixel esquerdo = %d   %d   %d\n", pic[0].img[pic[0].width * pic[0].height -1].r,pic[0].img[pic[0].width * pic[0].height -1].g,
+                              //     pic[0].img[pic[0].width * pic[0].height - 1].b);
 
                             // pixel da direita
                             pic[0].img[i+1].r;
                             pic[0].img[i+1].g;
                             pic[0].img[i+1].b;
 
+                            //printf("pixel direito = %d   %d   %d\n", pic[0].img[i+1].r,pic[0].img[i+1].g,pic[0].img[i+1].b);
+
                             // pixel de cima
                             pic[0].img[i - pic[0].width].r;
                             pic[0].img[i - pic[0].width].g;
                             pic[0].img[i - pic[0].width].b;
 
+                            //printf("pixel cima = %d   %d   %d\n", pic[0].img[i - pic[0].width].r, pic[0].img[i - pic[0].width].g, pic[0].img[i - pic[0].width].b);
+
                             //// pixel de baixo
                             pic[0].img[comecoPrimeiraLinha].r;
                             pic[0].img[comecoPrimeiraLinha].g;
                             pic[0].img[comecoPrimeiraLinha].b;
+
+                            //printf("pixel baixo = %d   %d   %d\n", pic[0].img[comecoPrimeiraLinha].r,pic[0].img[comecoPrimeiraLinha].g,pic[0].img[comecoPrimeiraLinha].b);
                         }
 
                         // Ultima linha ultimo pixel
-                        if(i == pic[0].width * pic[0].height){
+                        if(i == pic[0].width * pic[0].height-1){
                            // pixel central
                             pic[0].img[i].r;
                             pic[0].img[i].g;
                             pic[0].img[i].b;
+
+                            //printf("pixel central = %d   %d   %d\n",pic[0].img[i].r,pic[0].img[i].g,pic[0].img[i].b);
 
                             // pixel da esquerda
                             pic[0].img[i-1].r;
                             pic[0].img[i-1].g;
                             pic[0].img[i-1].b;
 
+                            //printf("pixel esquerdo = %d   %d   %d\n",pic[0].img[i-1].r,pic[0].img[i-1].g,pic[0].img[i-1].b);
+
                             // pixel da direita
                             pic[0].img[comecoUltimaLinha].r;
                             pic[0].img[comecoUltimaLinha].g;
                             pic[0].img[comecoUltimaLinha].b;
+
+                            //printf("pixel direito = %d   %d   %d\n", pic[0].img[comecoUltimaLinha].r,pic[0].img[comecoUltimaLinha].g,pic[0].img[comecoUltimaLinha].b);
 
                             // pixel de cima
                             pic[0].img[i-pic[0].width].r;
                             pic[0].img[i-pic[0].width].g;
                             pic[0].img[i-pic[0].width].b;
 
+                            //printf("pixel cima = %d   %d   %d\n",pic[0].img[i-pic[0].width].r,pic[0].img[i-pic[0].width].g,pic[0].img[i-pic[0].width].b);
+
                             //// pixel de baixo
-                            pic[0].img[pic[0].width].r;
-                            pic[0].img[pic[0].width].g;
-                            pic[0].img[pic[0].width].b;
+                            pic[0].img[pic[0].width -1].r;
+                            pic[0].img[pic[0].width -1].g;
+                            pic[0].img[pic[0].width -1].b;
+
+                            //printf("pixel baixo = %d   %d   %d\n",pic[0].img[pic[0].width -1].r,pic[0].img[pic[0].width -1].g,pic[0].img[pic[0].width -1].b);
                         }
                         // Pixels do meio ultima linha
                         else{
@@ -451,6 +506,7 @@ void keyboard(unsigned char key, int x, int y)
                     pic[0].img[i+pic[0].width].b;
                 }
         }
+        printf("energia: %d", matrizPixels[0][0]);
     }
     glutPostRedisplay();
 }
@@ -475,12 +531,12 @@ int pertenceUltimos(int pixel, int listaPixelsUltimaColuna[]){
     return 0;
 }
 
-/*
-void calculaEnergia(Img pic){
-
-    int matrizPixels[pic.height][pic.width];
-
-}*/
+void calculaEnergia(int matrizPixels[pic[0].height][pic[0].width], int pixel, int rx, int bx, int gx, int ry, int gy, int by){
+    int energia;
+    energia = (pow(rx,2) + pow(gx,2) + pow(bx,2)) + (pow(ry,2) + pow(gy,2) + pow(by,2));
+    int posicaoY = floor(pixel / pic[0].width);
+    matrizPixels[posicaoY][pixel] = energia;
+}
 
 // Faz upload da imagem para a textura,
 // de forma a exibi-la na tela
