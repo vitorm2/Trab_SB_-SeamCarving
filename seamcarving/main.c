@@ -39,6 +39,9 @@ void init();
 void draw();
 void keyboard(unsigned char key, int x, int y);
 
+int pertencePrimeiros(int pixel,int listaPixelsPrimeiraColuna[]);
+int pertenceUltimos(int pixel, int listaPixelsUltimaColuna[]);
+
 // Largura e altura da janela
 int width, height;
 
@@ -166,18 +169,25 @@ void keyboard(unsigned char key, int x, int y)
 
         int matrizPixels[pic[0].height][pic[0].width];
 
-         int listaPixelsPrimeiraColuna[pic[0].height];
-        int listaPixelsUltimaColuna[pic[0].height];
+        int listaPixelsPrimeiraColuna[pic[0].height - 2];
+        int listaPixelsUltimaColuna[pic[0].height - 2];
 
         // Preenche um array de inteiros com os numeros referentes aos pixels da primeira coluna da imagem
         for(i = 0; i < (pic[0].height - 2); i++){
             listaPixelsPrimeiraColuna[i] = (pic[0].width * (i+1)) + 1;
         }
+
         // Preenche um array de inteiros com os numeros referentes aos pixels da ultima coluna da imagem
+        int j = 1;
         for(i = 0; i < (pic[0].height - 1); i++){
-            listaPixelsUltimaColuna[i] = pic[0].width * (i+1);
+            listaPixelsUltimaColuna[i] = pic[0].width * (j+1);
+            j++;
         }
 
+        // PRINTA NA TELA
+        for(i = 0; i < (sizeof(listaPixelsPrimeiraColuna)/sizeof(int)); i++){
+            printf(" %d", listaPixelsPrimeiraColuna[i]);
+        }
 
         for(i = 0; i < pic[0].height*pic[0].width; i++){
 
@@ -208,7 +218,7 @@ void keyboard(unsigned char key, int x, int y)
                             pic[0].img[comecoUltimaLinha].g;
                             pic[0].img[comecoUltimaLinha].b;
 
-                            //// pixel de baixo
+                            // pixel de baixo
                             pic[0].img[pic[0].width+1].r;
                             pic[0].img[pic[0].width+1].g;
                             pic[0].img[pic[0].width+1].b;
@@ -271,7 +281,7 @@ void keyboard(unsigned char key, int x, int y)
                 }
 
                 // If da ultima linha pq varia o pixel de baixo
-                if(i >= comecoUltimaLinha & i <= pic[0].width * pic[0].heigh){
+                if(i >= comecoUltimaLinha & i <= pic[0].width * pic[0].height){
                         // Ultima linha primeiro pixel
                         if(i == comecoUltimaLinha){
                             // pixel central
@@ -280,9 +290,9 @@ void keyboard(unsigned char key, int x, int y)
                             pic[0].img[i].b;
 
                             // pixel da esquerda
-                            pic[0].img[i-(pic[0].width * pic[0].heigh)].r;
-                            pic[0].img[i-(pic[0].width * pic[0].heigh)].g;
-                            pic[0].img[i-(pic[0].width * pic[0].heigh)].b;
+                            pic[0].img[i-(pic[0].width * pic[0].height)].r;
+                            pic[0].img[i-(pic[0].width * pic[0].height)].g;
+                            pic[0].img[i-(pic[0].width * pic[0].height)].b;
 
                             // pixel da direita
                             pic[0].img[i+1].r;
@@ -301,7 +311,7 @@ void keyboard(unsigned char key, int x, int y)
                         }
 
                         // Ultima linha ultimo pixel
-                        if(i == pic[0].width * pic[0].heigh){
+                        if(i == pic[0].width * pic[0].height){
                            // pixel central
                             pic[0].img[i].r;
                             pic[0].img[i].g;
@@ -357,16 +367,95 @@ void keyboard(unsigned char key, int x, int y)
                 }
 
                 // Pixels da primeira coluna
-                if{}
+                if(pertencePrimeiros(i, listaPixelsPrimeiraColuna) == 1){
+                    // pixel central
+                    pic[0].img[i].r;
+                    pic[0].img[i].g;
+                    pic[0].img[i].b;
+
+                    // pixel da esquerda
+                    pic[0].img[i + pic[0].width - 1].r;
+                    pic[0].img[i + pic[0].width - 1].g;
+                    pic[0].img[i + pic[0].width - 1].b;
+
+                    // pixel da direita
+                    pic[0].img[i+1].r;
+                    pic[0].img[i+1].g;
+                    pic[0].img[i+1].b;
+
+                    // pixel de cima
+                    pic[0].img[i-pic[0].width].r;
+                    pic[0].img[i-pic[0].width].g;
+                    pic[0].img[i-pic[0].width].b;
+
+                    // pixel de baixo
+                    pic[0].img[i+pic[0].width].r;
+                    pic[0].img[i+pic[0].width].g;
+                    pic[0].img[i+pic[0].width].b;
+                }
+
                 // Pixels da ultima coluna
-                if{}
+                if(pertenceUltimos(i, listaPixelsUltimaColuna) == 1){
+
+                    // pixel central
+                    pic[0].img[i].r;
+                    pic[0].img[i].g;
+                    pic[0].img[i].b;
+
+                    // pixel da esquerda
+                    pic[0].img[i-1].r;
+                    pic[0].img[i-1].g;
+                    pic[0].img[i-1].b;
+
+                    // pixel da direita
+                    pic[0].img[i- pic[0].width +1].r;
+                    pic[0].img[i -pic[0].width +1].g;
+                    pic[0].img[i- pic[0].width +1].b;
+
+                    // pixel de cima
+                    pic[0].img[i-pic[0].width].r;
+                    pic[0].img[i-pic[0].width].g;
+                    pic[0].img[i-pic[0].width].b;
+
+                    // pixel de baixo
+                    pic[0].img[i+pic[0].width].r;
+                    pic[0].img[i+pic[0].width].g;
+                    pic[0].img[i+pic[0].width].b;
+                }
+
+                // Pixels do meio da imagem
+                else{
+                    // pixel central
+                    pic[0].img[i].r;
+                    pic[0].img[i].g;
+                    pic[0].img[i].b;
+
+                    // pixel da esquerda
+                    pic[0].img[i-1].r;
+                    pic[0].img[i-1].g;
+                    pic[0].img[i-1].b;
+
+                    // pixel da direita
+                    pic[0].img[i+1].r;
+                    pic[0].img[i+1].g;
+                    pic[0].img[i+1].b;
+
+                    // pixel de cima
+                    pic[0].img[i-pic[0].width].r;
+                    pic[0].img[i-pic[0].width].g;
+                    pic[0].img[i-pic[0].width].b;
+
+                    // pixel de baixo
+                    pic[0].img[i+pic[0].width].r;
+                    pic[0].img[i+pic[0].width].g;
+                    pic[0].img[i+pic[0].width].b;
+                }
         }
     }
     glutPostRedisplay();
 }
-int pertencePrimeiros(int pixel,int listaPixelsPrimeiraColuna){
+int pertencePrimeiros(int pixel,int listaPixelsPrimeiraColuna[]){
     int i;
-
     for(i = 0; i < (sizeof(listaPixelsPrimeiraColuna)/sizeof(int)); i++){
         if(listaPixelsPrimeiraColuna[i] == pixel){
             return 1;
@@ -375,7 +464,7 @@ int pertencePrimeiros(int pixel,int listaPixelsPrimeiraColuna){
     return 0;
 }
 
-int pertenceUltimos(int pixel, int listaPixelsUltimaColuna){
+int pertenceUltimos(int pixel, int listaPixelsUltimaColuna[]){
     int i;
 
     for(i = 0; i < (sizeof(listaPixelsUltimaColuna)/sizeof(int)); i++){
