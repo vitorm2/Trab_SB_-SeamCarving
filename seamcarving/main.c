@@ -69,7 +69,7 @@ void load(char* name, Img* pic)
     printf("Load: %d x %d x %d\n", pic->width, pic->height, chan);
 }
 
-void calculaEnergia(int matrizPixels[pic[0].height][pic[0].width], int pixel, int rx, int bx, int gx, int ry, int gy, int by);
+void calculaEnergia(int matrizPixels[], int pixel, int rx, int bx, int gx, int ry, int gy, int by);
 
 int main(int argc, char** argv)
 {
@@ -171,32 +171,27 @@ void keyboard(unsigned char key, int x, int y)
         // Chame uploadTexture a cada vez que mudar
         // a imagem (pic[2])
 
-        if(1 == 1){printf("1");}
-        else if(1 == 2){printf("1");}
-        else if(1 == 3){printf("1");}
-        else{printf("1");};
-
-        int matrizPixels[pic[0].height][pic[0].width];
+        int matrizPixels[pic[0].height * pic[0].width];
 
         int listaPixelsPrimeiraColuna[pic[0].height - 2];
         int listaPixelsUltimaColuna[pic[0].height - 2];
 
         // Preenche um array de inteiros com os numeros referentes aos pixels da primeira coluna da imagem
         for(i = 0; i < (pic[0].height - 2); i++){
-            listaPixelsPrimeiraColuna[i] = (pic[0].width * (i+1)) + 1;
+            listaPixelsPrimeiraColuna[i] = pic[0].width * (i+1);
         }
 
         // Preenche um array de inteiros com os numeros referentes aos pixels da ultima coluna da imagem
         int j = 1;
         for(i = 0; i < (pic[0].height - 1); i++){
-            listaPixelsUltimaColuna[i] = pic[0].width * (j+1);
+            listaPixelsUltimaColuna[i] = (pic[0].width * (j+1)) -1;
             j++;
         }
 
         //PRINTA NA TELA
-        //for(i = 0; i < (sizeof(listaPixelsUltimaColuna)/sizeof(int)); i++){
-        //    printf(" %d", listaPixelsUltimaColuna[i]);
-        //}
+        for(i = 0; i < (sizeof(listaPixelsPrimeiraColuna)/sizeof(int)); i++){
+            printf(" %d", listaPixelsPrimeiraColuna[i]);
+        }
 
         int qtdP = sizeof(listaPixelsPrimeiraColuna)/sizeof(int);
         int qtdU = sizeof(listaPixelsUltimaColuna)/sizeof(int);
@@ -204,7 +199,7 @@ void keyboard(unsigned char key, int x, int y)
         printf("listaP = %d\n", (sizeof(listaPixelsPrimeiraColuna)/sizeof(int)));
         printf("listaU = %d\n", (sizeof(listaPixelsUltimaColuna)/sizeof(int)));
 
-        for(i = 0; i <= pic[0].height*pic[0].width; i++){
+        for(i = 0; i < pic[0].height*pic[0].width; i++){
 
                 int comecoPrimeiraLinha = 0;
                 int comecoUltimaLinha = pic[0].width*(pic[0].height - 1);
@@ -238,9 +233,9 @@ void keyboard(unsigned char key, int x, int y)
 
                             //printf("pixel direito = %d   %d   %d\n", pic[0].img[i+1].r,pic[0].img[i+1].g,pic[0].img[i+1].b);
 
-                            printf("rx: %d\n", rx);
-                            printf("gx: %d\n", gx);
-                            printf("bx: %d\n", bx);
+                            //printf("rx: %d\n", rx);
+                            //printf("gx: %d\n", gx);
+                            //printf("bx: %d\n", bx);
 
                             // pixel de cima
                             //pic[0].img[comecoUltimaLinha].r;
@@ -256,9 +251,9 @@ void keyboard(unsigned char key, int x, int y)
 
                             //printf("pixel cima = %d   %d   %d\n" , pic[0].img[pic[0].width].r,pic[0].img[pic[0].width].g,pic[0].img[pic[0].width].b);
 
-                            printf("ry: %d\n", ry);
-                            printf("gy: %d\n", gy);
-                            printf("by: %d\n", by);
+                            //printf("ry: %d\n", ry);
+                            //printf("gy: %d\n", gy);
+                            //printf("by: %d\n", by);
 
                             calculaEnergia(matrizPixels, i, rx, gx, bx, ry, gy, by);
                             //energia = (pow(rx,2) + pow(gx,2) + pow(bx,2)) + (pow(ry,2) + pow(gy,2) + pow(by,2));
@@ -336,7 +331,7 @@ void keyboard(unsigned char key, int x, int y)
                 }
 
                 // If da ultima linha pq varia o pixel de baixo
-                else if(i >= comecoUltimaLinha & i <= pic[0].width * pic[0].height){
+                else if(i >= comecoUltimaLinha & i < (pic[0].width * pic[0].height)){
                         // Ultima linha primeiro pixel
                         if(i == comecoUltimaLinha){
                             // pixel central
@@ -381,9 +376,9 @@ void keyboard(unsigned char key, int x, int y)
                             calculaEnergia(matrizPixels, i, rx, gx, bx, ry, gy, by);
                         }
                         // Ultima linha ultimo pixel
-                        else if(i == pic[0].width * pic[0].height){
+                        else if(i == (pic[0].width * pic[0].height -1)){
 
-                           // pixel central
+                            //printf("pixel[%d]\n", i);
                             pic[0].img[i].r;
                             pic[0].img[i].g;
                             pic[0].img[i].b;
@@ -427,25 +422,38 @@ void keyboard(unsigned char key, int x, int y)
                             pic[0].img[i].g;
                             pic[0].img[i].b;
 
+                            printf("pixel[%d]\n", i);
+
+                            printf("pixel central = %d   %d   %d\n",pic[0].img[i].r,pic[0].img[i].g,pic[0].img[i].b);
+
                             // pixel da esquerda
                             //pic[0].img[i-1].r;
                             //pic[0].img[i-1].g;
                             //pic[0].img[i-1].b;
+
+                            printf("pixel esquerdo = %d   %d   %d\n",pic[0].img[i-1].r,pic[0].img[i-1].g,pic[0].img[i-1].b);
 
                             // pixel da direita
                             rx = pic[0].img[i-1].r - pic[0].img[i+1].r;
                             gx = pic[0].img[i-1].g - pic[0].img[i+1].g;
                             bx = pic[0].img[i-1].b - pic[0].img[i+1].b;
 
+                            printf("pixel direito = %d   %d   %d\n",pic[0].img[i+1].r,pic[0].img[i+1].g,pic[0].img[i+1].b);
+
                             // pixel de cima
                             //pic[0].img[i-pic[0].width].r;
                             //pic[0].img[i-pic[0].width].g;
                             //pic[0].img[i-pic[0].width].b;
 
+                            printf("pixel cima = %d   %d   %d\n",pic[0].img[i-pic[0].width].r,pic[0].img[i-pic[0].width].g,pic[0].img[i-pic[0].width].b);
+
                             //// pixel de baixo
                             ry = pic[0].img[i - comecoUltimaLinha].r - pic[0].img[i-pic[0].width].r;
                             gy = pic[0].img[i - comecoUltimaLinha].g - pic[0].img[i-pic[0].width].g;
                             by = pic[0].img[i - comecoUltimaLinha].b - pic[0].img[i-pic[0].width].b;
+
+                            printf("pixel baixo = %d   %d   %d\n\n",pic[0].img[i - comecoUltimaLinha].r,pic[0].img[i - comecoUltimaLinha].g,pic[0].img[i - comecoUltimaLinha].b);
+
 
                             calculaEnergia(matrizPixels, i, rx, gx, bx, ry, gy, by);
                         }
@@ -579,11 +587,11 @@ void keyboard(unsigned char key, int x, int y)
         //printf("pixel[1] = %d\n  ", matrizPixels[195][1]);
 
         //printf("pixel[2] = %d\n  ", matrizPixels[196][2]);
-/*
-        for(i = 0; i < pic[0].width ;i++){
+
+        for(i = pic[0].width*(pic[0].height - 1); i < pic[0].height* pic[0].width; i++){
            // for(j = 0; j < pic[0].width; j++)
-                printf("energia pixel[0][%d]: %d", i, matrizPixels[0][i]);
-        }*/
+                printf("energia pixel[%d]: %d\n", i, matrizPixels[i]);
+        }
     }
     glutPostRedisplay();
 }
@@ -610,21 +618,21 @@ int pertenceUltimos(int pixel, int listaPixelsUltimaColuna[], int tamanho){
     return 0;
 }
 
-void calculaEnergia(int matrizPixels[pic[0].height][pic[0].width], int pixel, int rx, int bx, int gx, int ry, int gy, int by){
+void calculaEnergia(int matrizPixels[], int pixel, int rx, int bx, int gx, int ry, int gy, int by){
     int energia;
     int posicaoY;
 
     energia = (pow(rx,2) + pow(gx,2) + pow(bx,2)) + (pow(ry,2) + pow(gy,2) + pow(by,2));
     //printf("energia = %d \n", energia);
-    posicaoY = floor(pixel / pic[0].width);
+    //posicaoY = floor(pixel / pic[0].width);
 
     // Ultimo pixel da imagem (bota na linha certa na matriz)
-    if(pixel == pic[0].height*pic[0].width){
-        posicaoY = floor((pixel-1) / pic[0].width);
-    }
-    printf("pixel = %d \n", pixel);
+    //if(pixel == pic[0].height*pic[0].width){
+    //    posicaoY = floor((pixel-1) / pic[0].width);
+    //}
+    //printf("pixel = %d \n", pixel);
     //printf("posicaoY = %d \n", posicaoY);
-    //matrizPixels[posicaoY][pixel] = energia;
+    matrizPixels[pixel] = energia;
 }
 
 // Faz upload da imagem para a textura,
