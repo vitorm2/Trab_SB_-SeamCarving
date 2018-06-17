@@ -190,16 +190,16 @@ void keyboard(unsigned char key, int x, int y)
             j++;
         }
 
-        //PRINTA NA TELA
+        /*//PRINTA NA TELA
         for(i = 0; i < (sizeof(listaPixelsUltimaColuna)/sizeof(int)); i++){
             printf(" %d", listaPixelsUltimaColuna[i]);
-        }
+        }*/
 
         int qtdP = sizeof(listaPixelsPrimeiraColuna)/sizeof(int);
         int qtdU = sizeof(listaPixelsUltimaColuna)/sizeof(int);
 
-        printf("listaP = %d\n", (sizeof(listaPixelsPrimeiraColuna)/sizeof(int)));
-        printf("listaU = %d\n", (sizeof(listaPixelsUltimaColuna)/sizeof(int)));
+        //printf("listaP = %d\n", (sizeof(listaPixelsPrimeiraColuna)/sizeof(int)));
+        //printf("listaU = %d\n", (sizeof(listaPixelsUltimaColuna)/sizeof(int)));
 
         for(i = 0; i < pic[0].height*pic[0].width; i++){
 
@@ -671,9 +671,11 @@ void keyboard(unsigned char key, int x, int y)
 
         //printf("energia pixel[%d]: %d\n", i, matrizPixels[i]);
 
-        for(i = 0; i < pic[0].width * pic[0].height; i++){
-                printf("energia pixel[%d]: %d\n", i, matrizPixels[i]);
-        }
+        //for(i = 0; i < pic[0].width * pic[0].height; i++){
+          //      printf("energia pixel[%d]: %d\n", i, matrizPixels[i]);
+        //}
+
+        calculoEnergiaAcumulada(matrizPixels);
     }
     glutPostRedisplay();
 }
@@ -716,14 +718,100 @@ void calculaEnergia(int matrizPixels[], int pixel, int rx, int bx, int gx, int r
     //printf("posicaoY = %d \n", posicaoY);
     matrizPixels[pixel] = energia;
 }
-/*
-void verifica2Imagem(int matrizPixels[]){
-    int i;
-    for(i = 0; i < pic[0].height* pic; i++){
 
+void calculoEnergiaAcumulada(int matrizPixels[]){
+    int i, j;
+    unsigned long int matrizAlgoritmo[pic[0].width-1]; // array de valoresAcumulados
+    unsigned long int valorAcumulado; // valor acumulado do caminho
+    unsigned int caminhoSeam[pic[0].width-1][pic[0].height];// sequencia de pixels do caminho
+
+    // Inicia no primeiro pixel da primeira linha, no caso o 0, entao verifica o
+    // melhor caminho(com menos energia) apartir do pixel 0 e assim sucessivamente ate o final da primeira linha
+    for(i = 0; i < 2; i++){
+
+        valorAcumulado = 0;
+
+        for(j = 1; j < pic[0].height; j++){
+
+                // Primeiro pixel da primeira linha
+                if(i == 0){
+                        // primeiro pixel 0. Esse if foi feito pois o j inicia em 0
+                        if((j-1) == 0){
+                            caminhoSeam[i][0] = i;
+                            valorAcumulado = matrizPixels[i];
+                            //printf("caminhoSeam[%d][%d] = %d\n",i,i, caminhoSeam[i][i]);
+                        }
+                        //printf("%d   %d\n",matrizPixels[i+(pic[0].width*j)],matrizPixels[i+(pic[0].width*j)+1]);
+
+                   // Verifica a linha de baixo, no caso do 0 como ele pertence a primera coluna, ira comparar
+                   // 2 valores, o pixel de baixo e o pixel baixo-direito. O menor valor de energia sera adicionado
+                   // na matriz que registra a seguencia de pixels do seam. E sera somado ao valor total.
+                    if(matrizPixels[i+(pic[0].width*j)] <= matrizPixels[i+(pic[0].width*j)+1]){
+                        valorAcumulado = valorAcumulado + matrizPixels[i+(pic[0].width*j)];
+                        caminhoSeam[i][j] = i+(pic[0].width*j);
+                    }else{
+                        valorAcumulado = valorAcumulado + matrizPixels[i+(pic[0].width*j+1)];
+                        caminhoSeam[i][j] = i+(pic[0].width*j+1);
+                    }
+                    //printf("caminhoSeam[%d][%d] = %d\n",i,j, caminhoSeam[i][j]);
+                }
+                // Mesmo coisa do de cima so que é o ultimo pixel da primeira linha
+                // ##  NAO TESTEI  ##
+                else if(i == pic[0].width-1){
+                        if((j-1) == 0){
+                            caminhoSeam[i][0] = i;
+                            valorAcumulado = matrizPixels[i];
+                            printf("caminhoSeam[%d][%d] = %d\n",i,0, caminhoSeam[i][0]);
+                        }
+
+                    if(matrizPixels[i+(pic[0].width*j)] <= matrizPixels[i+(pic[0].width*j)-1]){
+                        valorAcumulado = valorAcumulado + matrizPixels[i+(pic[0].width*j)];
+                        caminhoSeam[i][j] = i+pic[0].width*j;
+                    }else{
+                        valorAcumulado = valorAcumulado + matrizPixels[i+(pic[0].width*j-1)];
+                        caminhoSeam[i][j] = i+(pic[0].width*j-1);
+                    }
+                    //printf("valorAcumulado = %lu\n", valorAcumulado);
+                    printf("caminhoSeam[%d][%d] = %d\n",i,j, caminhoSeam[i][j]);
+                }
+                // Pixels do meio da primeira linha, a comparação agora sera com os 3 pixels de baixo
+                // (baixo-esquerda, baixo, baixo-direita).
+                else{
+                        if((j-1) == 0){
+                            caminhoSeam[i][0] = i;
+                            valorAcumulado = matrizPixels[i];
+                            printf("caminhoSeam[%d][%d] = %d\n",i,0, caminhoSeam[i][0]);
+                        }
+                    // A > B % A > C
+                    if((matrizPixels[i+(pic[0].width*j)] <= matrizPixels[i+(pic[0].width*j)+1])
+                       && (matrizPixels[i+(pic[0].width*j)] <= matrizPixels[i+(pic[0].width*j)+2])){
+                        valorAcumulado = valorAcumulado + matrizPixels[i+(pic[0].width*j)];
+                        caminhoSeam[i][j] = i+(pic[0].width*j-1);
+                    }// B > A & B > C
+                    else if ((matrizPixels[i+(pic[0].width*j+1)] <= matrizPixels[i+(pic[0].width*j)])
+                       && (matrizPixels[i+(pic[0].width*j)+1] <= matrizPixels[i+(pic[0].width*j)+2])){
+                        valorAcumulado = valorAcumulado + matrizPixels[i+(pic[0].width*j+1)];
+                        caminhoSeam[i][j] = i+(pic[0].width*j-1)+1;
+                    }
+                    else{
+                        valorAcumulado = valorAcumulado + matrizPixels[i+(pic[0].width*j+2)];
+                        caminhoSeam[i][j] = i+(pic[0].width*j-1)+2;
+                    }
+                    //printf("valorAcumulado[%d] = %lu\n",j, valorAcumulado);
+                    printf("pixel[%d]: %d  pixel[%d]: %d  pixel[%d]: %d\n", i+(pic[0].width*j-1), matrizPixels[i+(pic[0].width*j)],
+                           i+(pic[0].width*j-1)+1,matrizPixels[i+(pic[0].width*j)+1], i+(pic[0].width*j-1)+2,matrizPixels[i+(pic[0].width*j)+2]);
+                    printf("caminhoSeam[%d][%d] = %d\n",i,j, caminhoSeam[i][j]);
+
+                }
+        }
+
+    matrizAlgoritmo[i] = valorAcumulado;
     }
 
-}*/
+    /*for(i = 0; i < pic[0].width; i++){
+        printf("coluna[%d] = %lu\n",i, matrizAlgoritmo[i]);
+    }*/
+}
 
 // Faz upload da imagem para a textura,
 // de forma a exibi-la na tela
@@ -771,3 +859,4 @@ void draw()
     // Exibe a imagem
     glutSwapBuffers();
 }
+
