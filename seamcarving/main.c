@@ -141,7 +141,7 @@ int main(int argc, char** argv)
 	// Pinta a imagem resultante de preto!
 	memset(pic[2].img, 0, width*height*3);
     // Cria textura para a imagem de saída
-	tex[2] = SOIL_create_OGL_texture((unsigned char*) pic[2].img, pic[2].width, pic[2].height, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, 0);
+	//tex[2] = SOIL_create_OGL_texture((unsigned char*) pic[2].img, pic[2].width, pic[2].height, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, 0);
     //tex[2] = SOIL_create_OGL_texture((unsigned char*) pic[3].img, pic[3].width, pic[3].height, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, 0);
 
 	// Entra no loop de eventos, não retorna
@@ -164,7 +164,7 @@ void keyboard(unsigned char key, int x, int y)
     if(key >= '1' && key <= '3')
         // 1-3: seleciona a imagem correspondente (origem, máscara e resultado)
         sel = key - '1';
-    if(key == 's') {
+    if(key == 'd') {
         // Aplica o algoritmo e gera a saida em pic[2].img...
         // ...
         // ... (crie uma função para isso!)
@@ -211,23 +211,28 @@ void keyboard(unsigned char key, int x, int y)
              //   printf(" %d", listaPixelsUltimaColuna[i]);
             //}
             int count;
-            int pixelsImportantes[512];
+            int pixelsImportantes[pic[0].width];
             int qtdP = sizeof(listaPixelsPrimeiraColuna)/sizeof(int);
             int qtdU = sizeof(listaPixelsUltimaColuna)/sizeof(int);
-            for(i = 0; i < 50; i++){
+            for(i = 0; i < 60; i++){
                 verificaEnergia(matrizPixels, listaPixelsPrimeiraColuna, qtdP, listaPixelsUltimaColuna, qtdU);
                 int linhaE = identificaLinha(pixelsImportantes, &count);
-                printf("linhaEscolhida: %d\n", linhaE);
+                //printf("linhaEscolhida: %d\n", linhaE);
                 printf("count: %d\n", count);
+                printf("i: %d\n", i);
                 if(count != 0){
                 calculaEnergiaAc2(matrizPixels, listaPixelsPrimeiraColuna, qtdP, listaPixelsUltimaColuna, qtdU, linhaE, pixelsImportantes, count);
                 }
                 else{
-                    printf("Morreu\n");
+                    pintaVerde(i);
+                    calculoEnergiaAcumulada(matrizPixels, listaPixelsPrimeiraColuna, qtdP, listaPixelsUltimaColuna, qtdU, i);
                 }
             }
         }
     }
+    //tex[2] = SOIL_create_OGL_texture((unsigned char*) pic[0].img, pic[0].width, pic[0].height, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, 0);
+    uploadTexture();
+    SOIL_save_image("saida.bmp", SOIL_SAVE_TYPE_BMP, pic[0].width, pic[0].height, 3, pic[0].img);
     glutPostRedisplay();
 }
 
@@ -742,9 +747,9 @@ void calculaEnergiaAc2(int matrizPixels[], int listaPixelsPrimeiraColuna[], int 
                              int listaPixelsUltimaColuna[], int tamanhoUltimos, int linhaEscolhida, int pixelsImportantes[],
                              int count){
     int i, j, auxiliar;
-    unsigned long int matrizAlgoritmo[pic[0].width]; // array de valoresAcumulados
-    unsigned long int valorAcumulado; // valor acumulado do caminho
-    unsigned int caminhoSeam[pic[0].width][pic[0].height];// sequencia de pixels do caminho
+    //unsigned long int matrizAlgoritmo[pic[0].width]; // array de valoresAcumulados
+    //unsigned long int valorAcumulado; // valor acumulado do caminho
+    //unsigned int caminhoSeam[pic[0].width][pic[0].height];// sequencia de pixels do caminho
     int proximaLinha = pic[0].width;
     int pixelLinhaEscolhida = linhaEscolhida * pic[0].width;
     //for(i = 0; i< pic[0].width; i++){
@@ -753,7 +758,7 @@ void calculaEnergiaAc2(int matrizPixels[], int listaPixelsPrimeiraColuna[], int 
 
     //printf("pixelLinhaEscolhida: %d\n",pixelLinhaEscolhida);
 
-    for(i =0; i<=1; i++){
+    for(i =0; i<1; i++){
             auxiliar = pixelsImportantes[0] + proximaLinha;
             //printf("PixelImportante: %d\n", auxiliar);
             // Caminho Baixo
@@ -830,11 +835,12 @@ void calculaEnergiaAc2(int matrizPixels[], int listaPixelsPrimeiraColuna[], int 
         verificaEnergia(matrizPixels, listaPixelsPrimeiraColuna, tamanhoPrimeiros, listaPixelsUltimaColuna, tamanhoUltimos);
     }
 
-    printf("Aqui\n");
+    //printf("Aqui\n");
     //int pixelEscolhido = escolheCaminhoMenorValorAcumulado(matrizAlgoritmo);
     //printf("pixel escolhido: %d\n",pixelEscolhido);
 
-    SOIL_save_image("saida.bmp", SOIL_SAVE_TYPE_BMP, pic[0].width, pic[0].height, 3, pic[0].img);
+
+    //SOIL_save_image("saida.bmp", SOIL_SAVE_TYPE_BMP, pic[0].width, pic[0].height, 3, pic[0].img);
 
 }
 
@@ -856,9 +862,9 @@ int identificaLinha(int pixelsImportantes[], int *count){
                 //pixelsImportantes[contadorVerm] = j;
                 contadorVerm++;
 
-                //pic[0].img[j].r = 255;
-                //pic[0].img[j].g = 0;
-                //pic[0].img[j].b = 0;
+                pic[0].img[j].r = 255;
+                pic[0].img[j].g = 0;
+                pic[0].img[j].b = 0;
                 //printf("Entrou aqui\n");
             }
         }
@@ -892,15 +898,18 @@ int identificaLinha(int pixelsImportantes[], int *count){
 }
 
 void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[], int tamanhoPrimeiros,
-                             int listaPixelsUltimaColuna[], int tamanhoUltimos ){
+                             int listaPixelsUltimaColuna[], int tamanhoUltimos, int larguraRetirada){
     int i, j, auxiliar;
-    unsigned long int matrizAlgoritmo[pic[0].width]; // array de valoresAcumulados
+    unsigned long int matrizAlgoritmo[pic[0].width-larguraRetirada]; // array de valoresAcumulados
     unsigned long int valorAcumulado; // valor acumulado do caminho
     unsigned int caminhoSeam[pic[0].width][pic[0].height];// sequencia de pixels do caminho
     int proximaLinha = pic[0].width;
     // Inicia no primeiro pixel da primeira linha, no caso o 0, entao verifica o
     // melhor caminho(com menos energia) apartir do pixel 0 e assim sucessivamente ate o final da primeira linha
-    for(i = 0; i < 512; i++){
+
+    verificaEnergia(matrizPixels, listaPixelsPrimeiraColuna, tamanhoPrimeiros, listaPixelsUltimaColuna, tamanhoUltimos);
+
+    for(i = 0; i < (pic[0].width - larguraRetirada); i++){
 
         valorAcumulado = 0;
         auxiliar = i; // É o pixel verificado
@@ -909,14 +918,14 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
 
         for(j = 0; j < pic[0].height; j++){
 
-                // Se o pixel for um do canto ESQUERDO ira ter um if direfente pois ira comparar com apenas 2 pixels.
+                /*// Se o pixel for um do canto ESQUERDO ira ter um if direfente pois ira comparar com apenas 2 pixels.
                 // Pega a posição do pixel e soma o valor de energia daquele pixel com o valor acumulado do caminho.
                 if(pertencePrimeiros(auxiliar, listaPixelsPrimeiraColuna, tamanhoPrimeiros) == 1 || auxiliar == 0){
                     // Pega o primeiro valor e e proximo
                     if(auxiliar == i){
                         valorAcumulado = matrizPixels[auxiliar];
+                        //puxaLinha(auxiliar, j,0);
                         caminhoSeam[i][j] = auxiliar;
-                        //puxaLinha(auxiliar, j);
                         j++;
                         //printf("auxiliar = %d\n", auxiliar);
                         //pic[0].img[auxiliar].r = 0;
@@ -925,8 +934,9 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                         if(matrizPixels[auxiliar + proximaLinha] < matrizPixels[auxiliar + proximaLinha+1]){
                             valorAcumulado = valorAcumulado + matrizPixels[auxiliar + proximaLinha];
                             auxiliar = auxiliar + proximaLinha;
+                            //puxaLinha(auxiliar, j,0);
                             caminhoSeam[i][j]= auxiliar;
-                            //puxaLinha(auxiliar, j);
+                            //puxaLinha(auxiliar, j, 0);
                             //printf("auxiliar = %d\n", auxiliar);
                             //pic[0].img[auxiliar].r = 0;
                             //pic[0].img[auxiliar].g = 255;
@@ -935,9 +945,9 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                         else{
                             valorAcumulado = valorAcumulado = matrizPixels[auxiliar + proximaLinha+1];
                             auxiliar = auxiliar + proximaLinha +1;
+                            //puxaLinha(auxiliar, j,0);
                             caminhoSeam[i][j]= auxiliar;
                             //printf("auxiliar = %d\n", auxiliar);
-                            //puxaLinha(auxiliar, j);
                             //pic[0].img[auxiliar].r = 0;
                             //pic[0].img[auxiliar].g = 255;
                             //pic[0].img[auxiliar].b = 0;
@@ -949,8 +959,8 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                             valorAcumulado = valorAcumulado + matrizPixels[auxiliar+proximaLinha];
                             auxiliar = auxiliar + proximaLinha;
                             caminhoSeam[i][j] = auxiliar;
+                            //puxaLinha(auxiliar, j,0);
                             //printf("auxiliar = %d\n", auxiliar);
-                            //puxaLinha(auxiliar, j);
                             //pic[0].img[auxiliar].r = 0;
                             //pic[0].img[auxiliar].g = 255;
                             //pic[0].img[auxiliar].b = 0;
@@ -959,6 +969,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                             valorAcumulado = valorAcumulado + matrizPixels[auxiliar + proximaLinha+1];
                             auxiliar = auxiliar + proximaLinha +1;
                             caminhoSeam[i][j]= auxiliar;
+                            //puxaLinha(auxiliar, j,0);
                             //printf("auxiliar = %d\n", auxiliar);
                             //pic[0].img[auxiliar].r = 0;
                             //pic[0].img[auxiliar].g = 255;
@@ -975,6 +986,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                             valorAcumulado = matrizPixels[auxiliar];
                             caminhoSeam[i][j] = auxiliar;
                             j++;
+                            //puxaLinha(auxiliar, j,0);
                             //printf("auxiliar = %d\n", auxiliar);
                             //pic[0].img[auxiliar].r = 0;
                             //pic[0].img[auxiliar].g = 255;
@@ -983,6 +995,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                                 valorAcumulado = valorAcumulado + matrizPixels[auxiliar + proximaLinha];
                                 auxiliar = auxiliar + proximaLinha;
                                 caminhoSeam[i][j]= auxiliar;
+                                //puxaLinha(auxiliar, j,0);
                                 //printf("auxiliar = %d\n", auxiliar);
                                 //pic[0].img[auxiliar].r = 0;
                                 //pic[0].img[auxiliar].g = 255;
@@ -992,6 +1005,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                                 valorAcumulado = valorAcumulado + matrizPixels[auxiliar + proximaLinha-1];
                                 auxiliar = auxiliar + proximaLinha -1;
                                 caminhoSeam[i][j]= auxiliar;
+                                //puxaLinha(auxiliar, j,0);
                                 //printf("auxiliar = %d\n", auxiliar);
                                 //pic[0].img[auxiliar].r = 0;
                                 //pic[0].img[auxiliar].g = 255;
@@ -1004,6 +1018,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                                 valorAcumulado = valorAcumulado + matrizPixels[auxiliar + proximaLinha];
                                 auxiliar = auxiliar + proximaLinha;
                                 caminhoSeam[i][j]= auxiliar;
+                                //puxaLinha(auxiliar, j,0);
                                 //printf("auxiliar = %d\n", auxiliar);
                                 //pic[0].img[auxiliar].r = 0;
                                 //pic[0].img[auxiliar].g = 255;
@@ -1013,6 +1028,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                                 valorAcumulado = valorAcumulado + matrizPixels[auxiliar + proximaLinha-1];
                                 auxiliar = auxiliar + proximaLinha -1;
                                 caminhoSeam[i][j]= auxiliar;
+                                //puxaLinha(auxiliar, j,0);
                                 //printf("auxiliar = %d\n", auxiliar);
                                 //pic[0].img[auxiliar].r = 0;
                                 //pic[0].img[auxiliar].g = 255;
@@ -1022,15 +1038,15 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                 }
                 // Pixel que possui 3 pixels para comparação (pixels do meio).
                 // Pega a posição do pixel e soma o valor de energia daquele pixel com o valor acumulado do caminho.
-                else{
+                *///else{
                     // Pega o primeiro pixel e o seguinte
                     if(auxiliar == i){
                         valorAcumulado = matrizPixels[auxiliar];
                         caminhoSeam[i][j] = auxiliar;
-                        puxaLinha(auxiliar, j);
+                        //puxaLinha(auxiliar, j,0);
                         j++;
                         //printf("auxiliar = %d  energia = %d\n", auxiliar,matrizPixels[auxiliar]);
-                        //puxaLinha(auxiliar, j);
+                        //puxaLinha(auxiliar, j,0);
                         //pic[0].img[auxiliar].r = 0;
                         //pic[0].img[auxiliar].g = 255;
                         //pic[0].img[auxiliar].b = 0;
@@ -1039,7 +1055,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                             auxiliar = auxiliar + proximaLinha;
                             caminhoSeam[i][j]= auxiliar;
                             //printf("auxiliar = %d  energia = %d\n", auxiliar,matrizPixels[auxiliar]);
-                            //puxaLinha(auxiliar, j);
+                            //puxaLinha(auxiliar, j,0);
                             //pic[0].img[auxiliar].r = 0;
                             //pic[0].img[auxiliar].g = 255;
                             //pic[0].img[auxiliar].b = 0;
@@ -1049,7 +1065,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                             auxiliar = auxiliar + proximaLinha +1;
                             caminhoSeam[i][j]= auxiliar;
                             //printf("auxiliar = %d  energia = %d\n", auxiliar,matrizPixels[auxiliar]);
-                            //puxaLinha(auxiliar, j);
+                            //puxaLinha(auxiliar, j,0);
                             //pic[0].img[auxiliar].r = 0;
                             //pic[0].img[auxiliar].g = 255;
                             //pic[0].img[auxiliar].b = 0;
@@ -1064,7 +1080,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                             auxiliar = auxiliar + proximaLinha;
                             caminhoSeam[i][j]= auxiliar;
                             //printf("auxiliar = %d  energia = %d\n", auxiliar,matrizPixels[auxiliar]);
-                            //puxaLinha(auxiliar, j);
+                            //puxaLinha(auxiliar, j,0);
                             //pic[0].img[auxiliar].r = 0;
                             //pic[0].img[auxiliar].g = 255;
                             //pic[0].img[auxiliar].b = 0;
@@ -1076,7 +1092,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                             auxiliar = auxiliar + proximaLinha +1;
                             caminhoSeam[i][j]= auxiliar;
                             //printf("auxiliar = %d  energia = %d\n", auxiliar,matrizPixels[auxiliar]);
-                            //puxaLinha(auxiliar, j);
+                            //puxaLinha(auxiliar, j,0);
                             //pic[0].img[auxiliar].r = 0;
                             //pic[0].img[auxiliar].g = 255;
                             //pic[0].img[auxiliar].b = 0;
@@ -1086,15 +1102,15 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
                             auxiliar = auxiliar + proximaLinha -1;
                             caminhoSeam[i][j]= auxiliar;
                             //printf("auxiliar = %d  energia = %d\n", auxiliar,matrizPixels[auxiliar]);
-                            //puxaLinha(auxiliar, j);
+                            //puxaLinha(auxiliar, j,0);
                             //pic[0].img[auxiliar].r = 0;
                             //pic[0].img[auxiliar].g = 255;
                             //pic[0].img[auxiliar].b = 0;
                          }
                     }
                 }
-        }
-        printf("Valor acumulado[%d] = %d \n",i, valorAcumulado);
+
+        //printf("Valor acumulado[%d] = %d \n",i, valorAcumulado);
         matrizAlgoritmo[i] = valorAcumulado;
     }
 
@@ -1103,9 +1119,18 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
         //printf("coluna[%d] = %lu\n",i, matrizAlgoritmo[i]);
     //}
 
-    int pixelEscolhido = escolheCaminhoMenorValorAcumulado(matrizAlgoritmo);
+    int pixelEscolhido = escolheCaminhoMenorValorAcumulado(matrizAlgoritmo, larguraRetirada);
     printf("pixel escolhido: %d\n",pixelEscolhido);
 
+
+    for(i = 0; i < pic[0].height; i++){
+        //printf("caminhoSeam: %d\n", caminhoSeam[pixelEscolhido][i]);
+        //pic[0].img[caminhoSeam[pixelEscolhido][i]].r = 0;
+        //pic[0].img[caminhoSeam[pixelEscolhido][i]].g = 255;
+        //pic[0].img[caminhoSeam[pixelEscolhido][i]].b = 0;
+        puxaLinha(caminhoSeam[pixelEscolhido][i], i, 0);
+    }
+/*
 
     int k;
     // ELIMINA A COLUNA
@@ -1136,7 +1161,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
         }
     }
 
-
+*/
 
     //printf("pixel antes: %d %d %d\n", pic[0].img[509].r,pic[0].img[509].g,pic[0].img[509].b);
     //pic[0].width = pic[0].width - 1;
@@ -1150,15 +1175,8 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
     //}
 
     printf("rodou\n");
-    uploadTexture();
-    //Salva a imagem
 
-    free(listaPixelsPrimeiraColuna);
-    free(listaPixelsUltimaColuna);
-    free(matrizAlgoritmo);
-    free(matrizPixels);
-    free(valorAcumulado);
-    SOIL_save_image("saida.bmp", SOIL_SAVE_TYPE_BMP, pic[0].width, pic[0].height, 3, pic[0].img);
+    //SOIL_save_image("saida.bmp", SOIL_SAVE_TYPE_BMP, pic[0].width, pic[0].height, 3, pic[0].img);
 
 }
 
@@ -1186,14 +1204,24 @@ void puxaLinha(int pixel, int linha, int imagem){
     }
 }
 
+void pintaVerde(int larguraReduzida){
+    int i,j;
+    for(j = (pic[0].width - larguraReduzida); j < pic[0].width*pic[0].height; j = j+pic[0].width){
+        for(i = 0; i<larguraReduzida; i++){
+                        pic[0].img[j+i].r = 0;
+                        pic[0].img[j+i].g = 255;
+                        pic[0].img[j+i].b = 0;
+        }
+    }
+}
 
 
-int escolheCaminhoMenorValorAcumulado(unsigned long int matrizAlgoritmo[]){
+int escolheCaminhoMenorValorAcumulado(unsigned long int matrizAlgoritmo[], int larguraRetirada){
     int i;
     int posicao;
     unsigned long int menorValor = MAXUINT_PTR;
     //printf("menorValor: %d\n", menorValor);
-    for(i = 0; i < pic[0].width;i++){
+    for(i = 0; i < pic[0].width-larguraRetirada;i++){
         if(matrizAlgoritmo[i] < menorValor){
             menorValor = matrizAlgoritmo[i];
             posicao = i;

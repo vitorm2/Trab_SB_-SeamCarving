@@ -405,23 +405,23 @@
 
 1504289654 c:\users\gerson\desktop\software basico\trab2\seamcarving\soil.h
 
-1529437149 source:c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_dxt.c
+1529620769 source:c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_dxt.c
 	"image_DXT.h"
 	<math.h>
 	<stdlib.h>
 	<string.h>
 	<stdio.h>
 
-1529437149 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_dxt.h
+1529620769 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_dxt.h
 
-1529437149 source:c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_helper.c
+1529620770 source:c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_helper.c
 	"image_helper.h"
 	<stdlib.h>
 	<math.h>
 
-1529437149 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_helper.h
+1529620770 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_helper.h
 
-1529437149 source:c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\soil.c
+1529620768 source:c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\soil.c
 	<windows.h>
 	<wingdi.h>
 	<GL/gl.h>
@@ -436,12 +436,12 @@
 	<stdlib.h>
 	<string.h>
 
-1529437149 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\soil.h
+1529620768 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\soil.h
 
-1529437149 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stb_image_aug.h
+1529620770 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stb_image_aug.h
 	<stdio.h>
 
-1529437149 source:c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stb_image_aug.c
+1529620770 source:c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stb_image_aug.c
 	"stb_image_aug.h"
 	<math.h>
 	<string.h>
@@ -453,11 +453,11 @@
 	"stbi_DDS_aug.h"
 	"stbi_DDS_aug_c.h"
 
-1529437149 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stbi_dds_aug.h
+1529620771 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stbi_dds_aug.h
 
-1529437149 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stbi_dds_aug_c.h
+1529620771 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stbi_dds_aug_c.h
 
-1529439772 source:c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\main.c
+1529627371 source:c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -471,10 +471,10 @@
 	"SOIL.h"
 	<math.h>
 
-1529437149 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\include\gl\glut.h
+1529620768 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\include\gl\glut.h
 	"freeglut_std.h"
 
-1529437149 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\include\gl\freeglut_std.h
+1529620768 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\include\gl\freeglut_std.h
 	<windows.h>
 	<EGL/egl.h>
 	<GLES/gl.h>
@@ -485,7 +485,7 @@
 	<GL/glu.h>
 	<stdlib.h>
 
-1529437148 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\soil.h
+1529620766 c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\soil.h
 
 1529437149 source:h:\3º semestre\software básico\trab_sb_seamcarving-master\seamcarving\lib\soil\image_dxt.c
 	"image_DXT.h"
@@ -569,23 +569,23 @@
 
 1529437148 h:\3º semestre\software básico\trab_sb_seamcarving-master\seamcarving\soil.h
 
-1529437150 source:c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_dxt.c
+1529620770 source:c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_dxt.c
 	"image_DXT.h"
 	<math.h>
 	<stdlib.h>
 	<string.h>
 	<stdio.h>
 
-1529437150 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_dxt.h
+1529620770 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_dxt.h
 
-1529437150 source:c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_helper.c
+1529620772 source:c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_helper.c
 	"image_helper.h"
 	<stdlib.h>
 	<math.h>
 
-1529437150 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_helper.h
+1529620772 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_helper.h
 
-1529437150 source:c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\soil.c
+1529620770 source:c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\soil.c
 	<windows.h>
 	<wingdi.h>
 	<GL/gl.h>
@@ -600,12 +600,12 @@
 	<stdlib.h>
 	<string.h>
 
-1529437150 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\soil.h
+1529620770 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\soil.h
 
-1529437150 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stb_image_aug.h
+1529620772 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stb_image_aug.h
 	<stdio.h>
 
-1529437150 source:c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stb_image_aug.c
+1529620772 source:c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stb_image_aug.c
 	"stb_image_aug.h"
 	<math.h>
 	<string.h>
@@ -617,11 +617,11 @@
 	"stbi_DDS_aug.h"
 	"stbi_DDS_aug_c.h"
 
-1529437150 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stbi_dds_aug.h
+1529620772 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stbi_dds_aug.h
 
-1529437150 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stbi_dds_aug_c.h
+1529620772 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\stbi_dds_aug_c.h
 
-1529550429 source:c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\main.c
+1529636253 source:c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -635,10 +635,10 @@
 	"SOIL.h"
 	<math.h>
 
-1529437150 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\include\gl\glut.h
+1529620770 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\include\gl\glut.h
 	"freeglut_std.h"
 
-1529437150 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\include\gl\freeglut_std.h
+1529620770 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\include\gl\freeglut_std.h
 	<windows.h>
 	<EGL/egl.h>
 	<GLES/gl.h>
@@ -649,5 +649,5 @@
 	<GL/glu.h>
 	<stdlib.h>
 
-1529437150 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\soil.h
+1529620768 c:\users\gerson\desktop\trab_sb_seamcarving-master\seamcarving\soil.h
 
