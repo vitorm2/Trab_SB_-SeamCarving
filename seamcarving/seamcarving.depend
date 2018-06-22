@@ -323,23 +323,23 @@
 
 1504289654 c:\users\gerson\desktop\software basico\trabalho2\seamcarving\soil.h
 
-1504289654 source:c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\image_dxt.c
+1529620770 source:c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\image_dxt.c
 	"image_DXT.h"
 	<math.h>
 	<stdlib.h>
 	<string.h>
 	<stdio.h>
 
-1504289654 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\image_dxt.h
+1529620770 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\image_dxt.h
 
-1504289654 source:c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\image_helper.c
+1529620772 source:c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\image_helper.c
 	"image_helper.h"
 	<stdlib.h>
 	<math.h>
 
-1504289654 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\image_helper.h
+1529620772 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\image_helper.h
 
-1504289654 source:c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\soil.c
+1529620770 source:c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\soil.c
 	<windows.h>
 	<wingdi.h>
 	<GL/gl.h>
@@ -354,12 +354,12 @@
 	<stdlib.h>
 	<string.h>
 
-1504289654 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\soil.h
+1529620770 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\soil.h
 
-1504289654 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\stb_image_aug.h
+1529620772 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\stb_image_aug.h
 	<stdio.h>
 
-1504289654 source:c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\stb_image_aug.c
+1529620772 source:c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\stb_image_aug.c
 	"stb_image_aug.h"
 	<math.h>
 	<string.h>
@@ -371,11 +371,11 @@
 	"stbi_DDS_aug.h"
 	"stbi_DDS_aug_c.h"
 
-1504289654 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\stbi_dds_aug.h
+1529620772 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\stbi_dds_aug.h
 
-1504289654 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\stbi_dds_aug_c.h
+1529620772 c:\users\gerson\desktop\software basico\trab2\seamcarving\lib\soil\stbi_dds_aug_c.h
 
-1529260677 source:c:\users\gerson\desktop\software basico\trab2\seamcarving\main.c
+1529643408 source:c:\users\gerson\desktop\software basico\trab2\seamcarving\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -389,10 +389,10 @@
 	"SOIL.h"
 	<math.h>
 
-1426360528 c:\users\gerson\desktop\software basico\trab2\seamcarving\include\gl\glut.h
+1529620770 c:\users\gerson\desktop\software basico\trab2\seamcarving\include\gl\glut.h
 	"freeglut_std.h"
 
-1426360528 c:\users\gerson\desktop\software basico\trab2\seamcarving\include\gl\freeglut_std.h
+1529620770 c:\users\gerson\desktop\software basico\trab2\seamcarving\include\gl\freeglut_std.h
 	<windows.h>
 	<EGL/egl.h>
 	<GLES/gl.h>
@@ -403,7 +403,7 @@
 	<GL/glu.h>
 	<stdlib.h>
 
-1504289654 c:\users\gerson\desktop\software basico\trab2\seamcarving\soil.h
+1529620768 c:\users\gerson\desktop\software basico\trab2\seamcarving\soil.h
 
 1529620769 source:c:\users\17111098\desktop\trab_sb_seamcarving-master\seamcarving\lib\soil\image_dxt.c
 	"image_DXT.h"

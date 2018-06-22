@@ -90,8 +90,6 @@ int main(int argc, char** argv)
 	// Carrega as duas imagens
     load(argv[1], &pic[0]);
     load(argv[2], &pic[1]);
-    load(argv[1], &pic[3]); // COPIA IMAGEM ORIGINAL
-    load(argv[2], &pic[4]); // COPIA MASCARA
 
     if(pic[0].width != pic[1].width || pic[0].height != pic[1].height) {
         printf("Imagem e máscara com dimensões diferentes!\n");
@@ -128,6 +126,7 @@ int main(int argc, char** argv)
     // Exibe as dimensões na tela, para conferência
     printf("Origem  : %s %d x %d\n", argv[1], pic[0].width, pic[0].height);
     printf("Destino : %s %d x %d\n", argv[2], pic[1].width, pic[0].height);
+
     sel = 0; // pic1
 
 	// Define a janela de visualizacao 2D
@@ -141,10 +140,9 @@ int main(int argc, char** argv)
 	// Pinta a imagem resultante de preto!
 	memset(pic[2].img, 0, width*height*3);
     // Cria textura para a imagem de saída
-	//tex[2] = SOIL_create_OGL_texture((unsigned char*) pic[2].img, pic[2].width, pic[2].height, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, 0);
-    //tex[2] = SOIL_create_OGL_texture((unsigned char*) pic[3].img, pic[3].width, pic[3].height, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, 0);
+	tex[2] = SOIL_create_OGL_texture((unsigned char*) pic[2].img, pic[2].width, pic[2].height, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, 0);
 
-	// Entra no loop de eventos, não retorna
+    // Entra no loop de eventos, não retorna
     glutMainLoop();
 }
 
@@ -157,17 +155,17 @@ void keyboard(unsigned char key, int x, int y)
       free(pic[0].img);
       free(pic[1].img);
       free(pic[2].img);
-      free(pic[3].img);
-      free(pic[4].img);
       exit(1);
     }
     if(key >= '1' && key <= '3')
         // 1-3: seleciona a imagem correspondente (origem, máscara e resultado)
         sel = key - '1';
-    if(key == 'd') {
+    if(key == 's') {
         // Aplica o algoritmo e gera a saida em pic[2].img...
         // ...
         // ... (crie uma função para isso!)
+
+
         long i, g = 0;
         // Exemplo: pintando tudo de amarelo
         /*for(i=0; i<(pic[2].height*pic[2].width); i++){
@@ -177,8 +175,6 @@ void keyboard(unsigned char key, int x, int y)
         }*/
         // Chame uploadTexture a cada vez que mudar
         // a imagem (pic[2])
-
-        for(g = 0; g<1; g++){
 
             //printf("tamanho[%d]: %d\n", g, pic[0].width);
             int matrizPixels[pic[0].height * pic[0].width];
@@ -218,7 +214,7 @@ void keyboard(unsigned char key, int x, int y)
                 verificaEnergia(matrizPixels, listaPixelsPrimeiraColuna, qtdP, listaPixelsUltimaColuna, qtdU);
                 int linhaE = identificaLinha(pixelsImportantes, &count);
                 //printf("linhaEscolhida: %d\n", linhaE);
-                printf("count: %d\n", count);
+                //printf("count: %d\n", count);
                 printf("i: %d\n", i);
                 if(count != 0){
                 calculaEnergiaAc2(matrizPixels, listaPixelsPrimeiraColuna, qtdP, listaPixelsUltimaColuna, qtdU, linhaE, pixelsImportantes, count);
@@ -228,10 +224,49 @@ void keyboard(unsigned char key, int x, int y)
                     calculoEnergiaAcumulada(matrizPixels, listaPixelsPrimeiraColuna, qtdP, listaPixelsUltimaColuna, qtdU, i);
                 }
             }
+/*
+            int kk =1;
+            printf("fim  %d\n", pic[2].width);
+            for(j = 0; j < pic[2].height*pic[2].width; j= j + pic[2].width){
+                if(j == 0){
+                    for(i = 0; i< pic[2].width; i++){
+                            pic[2].img[j+i].r = pic[0].img[j+i].r;
+                            pic[2].img[j+i].g = pic[0].img[j+i].g;
+                            pic[2].img[j+i].b = pic[0].img[j+i].b;
+                    }
+                }
+                else{
+                    for(i = 0; i< pic[2].width- 50; i++){
+                            pic[2].img[j+i].r = pic[0].img[j+i+60*kk].r;
+                            pic[2].img[j+i].g = pic[0].img[j+i+60*kk].g;
+                            pic[2].img[j+i].b = pic[0].img[j+i+60*kk].b;
+                    }
+                }
+                //pic[2].img[j].r = 255;
+                //pic[2].img[j].g = 0;
+                //pic[2].img[j].b = 0;
+                  kk++;
+            }
+*/
+        for(i=0; i<(pic[2].height*pic[2].width); i++){
+                pic[2].img[i].r = pic[0].img[i].r;
+                pic[2].img[i].g = pic[0].img[i].g;
+                pic[2].img[i].b = pic[0].img[i].b;
         }
+
+        for(i=0; i<(pic[2].height*pic[2].width); i++){
+            if(pic[2].img[i].r == 0 && pic[2].img[i].g == 255 && pic[2].img[i].b == 0){
+                pic[2].img[i].r = 0;
+                pic[2].img[i].g = 0;
+                pic[2].img[i].b = 0;
+            }
+        }
+
+         uploadTexture();
+
     }
     //tex[2] = SOIL_create_OGL_texture((unsigned char*) pic[0].img, pic[0].width, pic[0].height, SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, 0);
-    uploadTexture();
+    //uploadTexture();
     SOIL_save_image("saida.bmp", SOIL_SAVE_TYPE_BMP, pic[0].width, pic[0].height, 3, pic[0].img);
     glutPostRedisplay();
 }
@@ -1120,7 +1155,7 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
     //}
 
     int pixelEscolhido = escolheCaminhoMenorValorAcumulado(matrizAlgoritmo, larguraRetirada);
-    printf("pixel escolhido: %d\n",pixelEscolhido);
+    //printf("pixel escolhido: %d\n",pixelEscolhido);
 
 
     for(i = 0; i < pic[0].height; i++){
@@ -1173,8 +1208,6 @@ void calculoEnergiaAcumulada(int matrizPixels[], int listaPixelsPrimeiraColuna[]
          //   count++;
        // }
     //}
-
-    printf("rodou\n");
 
     //SOIL_save_image("saida.bmp", SOIL_SAVE_TYPE_BMP, pic[0].width, pic[0].height, 3, pic[0].img);
 
